@@ -172,6 +172,8 @@ const createDefaultPerson = async () => {
         numero_personne: '0',
         nom: 'Arbitre',
         prenom: 'Officiel',
+        date_naissance: '01/01/2000',
+        numero_tel: '',
     };
 
     const existingPerson = await Person.findOne({ _id: defaultPerson._id });
