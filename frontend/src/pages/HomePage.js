@@ -52,14 +52,18 @@ const HomePage = () => {
                                 <p>Chargement des convocations...</p>
                             ) : (
                                 <>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                        {teamConvocations.map((team) => (
-                                            <PublishedTeamColumn
-                                                key={team._id}
-                                                teamPublished={team}
-                                            />
-                                        ))}
-                                    </div>
+                                    {teamConvocations.length > 0 ? (
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                            {teamConvocations.map((team) => (
+                                                <PublishedTeamColumn
+                                                    key={team._id}
+                                                    teamPublished={team}
+                                                />
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p>Pas de convocations disponibles.</p>
+                                    )}
                                     {/*<div className="other-convocations">
                                         {otherConvocations ? (
                                             <>
