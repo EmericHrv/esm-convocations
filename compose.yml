@@ -1,0 +1,59 @@
+services:
+  caddy:
+    image: caddy
+    container_name: caddy-convocations
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - backend
+
+  mongo:
+    image: mongo
+    container_name: mongo-convocations
+    restart: always
+    networks:
+      - backend
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend-convocations
+    restart: always
+    networks:
+      - backend
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/convocationsDB
+    depends_on:
+      - mongo
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend-convocations
+    restart: always
+    networks:
+      - backend
+    ports:
+      - "8080:80"
+
+volumes:
+  mongo-data:
+  caddy_data:
+  caddy_config:
+
+
+networks:
+  backend:
+    driver: bridge
