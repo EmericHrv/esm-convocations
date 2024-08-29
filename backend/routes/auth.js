@@ -21,7 +21,7 @@ router.post('/login', async (req, res) => {
         if (!user || !(await user.comparePassword(password))) {
             return res.status(401).send({ error: 'Nom d\'utilisateur ou mot de passe invalide' });
         }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '48h' });
         res.send({ token });
     } catch (error) {
         res.status(400).send({ error: 'Erreur lors de la connexion' });
