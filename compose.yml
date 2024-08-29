@@ -5,7 +5,7 @@ services:
     container_name: mongo-convocations
     restart: always
     networks:
-      - backend
+      - convocations_network
     volumes:
       - mongo-data:/data/db
 
@@ -35,7 +35,7 @@ services:
     environment:
       - REACT_APP_BACKEND_URL=https://api.convocations.com/api
     ports:
-      - "80:80"
+      - "8080:80"
 
 volumes:
   mongo-data:
