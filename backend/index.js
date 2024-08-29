@@ -5,7 +5,7 @@ const { connectToDatabase } = require('./models/db');
 const routes = require('./routes'); // Import central routes
 
 const app = express();
-const port = 3000;
+const port = 5000;
 
 // Middleware pour parser le JSON
 app.use(express.json());
