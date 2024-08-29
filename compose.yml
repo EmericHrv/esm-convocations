@@ -50,7 +50,7 @@ services:
     environment:
       - REACT_APP_BACKEND_URL=https://api.convocations.com/api
     ports:
-      - "8081:8080"
+      - "8082:80"
 
 volumes:
   mongo-data:
