@@ -26,9 +26,12 @@ const PlayerPage = () => {
             });
 
             if (responsePersons.ok) {
-                const dataPersons = await responsePersons.json();
-                // Supprimer la personne dont le numero_personne est 0
-                const filteredPersons = dataPersons.filter(person => person.numero_personne !== 0);
+                let dataPersons = await responsePersons.json();
+
+                // Remove the person with numero_personne = 0
+                dataPersons = dataPersons.filter(person => person.numero_personne !== 0);
+
+                // Sort the remaining data
                 dataPersons.sort((a, b) => {
                     if (a.nom < b.nom) return -1;
                     if (a.nom > b.nom) return 1;
@@ -36,6 +39,7 @@ const PlayerPage = () => {
                     if (a.prenom > b.prenom) return 1;
                     return 0;
                 });
+
                 setData(dataPersons);
                 setFilteredData(dataPersons);
                 setPersonError('');
