@@ -6,8 +6,8 @@ services:
     cap_add:
       - NET_ADMIN
     ports:
-      - "8080:80"
-      - "443:443"
+      - "8081:80"
+      - "8443:443"
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
