@@ -11,7 +11,11 @@ const port = 3000;
 app.use(express.json());
 
 // Middleware CORS
-app.use(cors());
+app.use(cors({
+    origin: 'https://convocations.esmorannes.com',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 const startServer = () => {
     // Utiliser les routes centralisées après l'initialisation des modèles
