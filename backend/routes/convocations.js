@@ -108,24 +108,24 @@ router.get('/draft', authenticateToken, async (req, res) => {
 router.post('/draft', authenticateToken, async (req, res) => {
     try {
         const {
-            teams, // Liste des convocations d'équipe
+            teamConvocations, // Liste des convocations d'équipe
             otherConvocations
         } = req.body;
 
         // Log des données reçues
-        console.log('Données reçues pour le draft:', {
-            teams,
-            otherConvocations
-        });
+        // console.log('Données reçues pour le draft:', {
+        //     teamConvocations,
+        //     otherConvocations
+        // });
 
         // Gestion des convocations d'équipe
-        if (teams) {
+        if (teamConvocations) {
             const TeamConvocationDraft = getTeamConvocationDraftModel();
-            for (const teamConvocation of teams) {
+            for (const teamConvocation of teamConvocations) {
                 const { team, pasDeMatch, heureRdv, heureMatch, dateMatch, typeMatch, lieuMatch, adversaire, entraineur, coachs, joueurs, arbitreCentre, arbitreTouche, delegueTerrain, lavageMaillots, lavageVestiaires, infos } = teamConvocation;
 
                 // Log de chaque convocation d'équipe
-                console.log('Mise à jour de la convocation pour l\'équipe:', team);
+                // console.log('Mise à jour de la convocation pour l\'équipe:', team);
 
                 await TeamConvocationDraft.findOneAndUpdate(
                     { team }, // Rechercher la convocation par l'équipe
@@ -151,10 +151,8 @@ router.post('/draft', authenticateToken, async (req, res) => {
                 );
 
                 // Log après mise à jour de la convocation d'équipe
-                console.log('Convocation mise à jour pour l\'équipe:', team);
+                // console.log('Convocation mise à jour pour l\'équipe:', team);
             }
-        } else {
-            console.log('Aucune convocation d\'équipe à mettre à jour');
         }
 
         // Gestion des autres convocations
@@ -162,7 +160,7 @@ router.post('/draft', authenticateToken, async (req, res) => {
             const OtherConvocationsDraft = getOtherConvocationsDraftModel();
 
             // Log avant mise à jour des autres convocations
-            console.log('Mise à jour des autres convocations');
+            // console.log('Mise à jour des autres convocations');
 
             await OtherConvocationsDraft.findOneAndUpdate(
                 {}, // Puisqu'il n'y a pas d'ID spécifique, on met à jour le seul document existant
@@ -178,9 +176,7 @@ router.post('/draft', authenticateToken, async (req, res) => {
             );
 
             // Log après mise à jour des autres convocations
-            console.log('Autres convocations mises à jour');
-        } else {
-            console.log('Aucune autre convocation à mettre à jour');
+            // console.log('Autres convocations mises à jour');
         }
 
         res.status(201).json({ message: 'Draft mise à jour avec succès' });

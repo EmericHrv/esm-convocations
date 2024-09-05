@@ -103,6 +103,7 @@ const ConvocationsPage = () => {
             } else {
                 const newTeam = { team: teamId, ...updatedData };
                 const updatedTeams = [...prevState, newTeam];
+                console.log('Nouvelle convocation d\'équipe:', newTeam);
                 return updatedTeams;
             }
         });
