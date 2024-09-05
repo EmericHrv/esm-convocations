@@ -17,14 +17,24 @@ app.use(express.json());
 
 // Middleware CORS
 if (NODE_ENV === 'dev') {
+    console.log('CORS: Development Mode');
     app.use(cors());
 } else if (NODE_ENV === 'production') {
+    console.log('CORS: Production Mode');
     app.use(cors({
         origin: 'https://convocations.esmorannes.com',
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
         allowedHeaders: ['Content-Type', 'Authorization']
     }));
+} else {
+    console.log('CORS: No specific environment set');
 }
+
+// Middleware pour la gestion globale des erreurs
+app.use((err, req, res, next) => {
+    console.error('Unhandled Error:', err);
+    res.status(500).json({ message: 'Internal Server Error' });
+});
 
 const startServer = () => {
     // Utiliser les routes centralisées après l'initialisation des modèles
