@@ -113,10 +113,10 @@ router.post('/draft', authenticateToken, async (req, res) => {
         } = req.body;
 
         // Log des données reçues
-        // console.log('Données reçues pour le draft:', {
-        //     teams,
-        //     otherConvocations
-        // });
+        console.log('Données reçues pour le draft:', {
+            teams,
+            otherConvocations
+        });
 
         // Gestion des convocations d'équipe
         if (teams) {
@@ -125,7 +125,7 @@ router.post('/draft', authenticateToken, async (req, res) => {
                 const { team, pasDeMatch, heureRdv, heureMatch, dateMatch, typeMatch, lieuMatch, adversaire, entraineur, coachs, joueurs, arbitreCentre, arbitreTouche, delegueTerrain, lavageMaillots, lavageVestiaires, infos } = teamConvocation;
 
                 // Log de chaque convocation d'équipe
-                // console.log('Mise à jour de la convocation pour l\'équipe:', team);
+                console.log('Mise à jour de la convocation pour l\'équipe:', team);
 
                 await TeamConvocationDraft.findOneAndUpdate(
                     { team }, // Rechercher la convocation par l'équipe
@@ -151,8 +151,10 @@ router.post('/draft', authenticateToken, async (req, res) => {
                 );
 
                 // Log après mise à jour de la convocation d'équipe
-                // console.log('Convocation mise à jour pour l\'équipe:', team);
+                console.log('Convocation mise à jour pour l\'équipe:', team);
             }
+        } else {
+            console.log('Aucune convocation d\'équipe à mettre à jour');
         }
 
         // Gestion des autres convocations
@@ -160,7 +162,7 @@ router.post('/draft', authenticateToken, async (req, res) => {
             const OtherConvocationsDraft = getOtherConvocationsDraftModel();
 
             // Log avant mise à jour des autres convocations
-            // console.log('Mise à jour des autres convocations');
+            console.log('Mise à jour des autres convocations');
 
             await OtherConvocationsDraft.findOneAndUpdate(
                 {}, // Puisqu'il n'y a pas d'ID spécifique, on met à jour le seul document existant
@@ -176,7 +178,9 @@ router.post('/draft', authenticateToken, async (req, res) => {
             );
 
             // Log après mise à jour des autres convocations
-            // console.log('Autres convocations mises à jour');
+            console.log('Autres convocations mises à jour');
+        } else {
+            console.log('Aucune autre convocation à mettre à jour');
         }
 
         res.status(201).json({ message: 'Draft mise à jour avec succès' });
@@ -190,48 +194,29 @@ router.post('/draft', authenticateToken, async (req, res) => {
 // Route pour publier les convocations (copier de draft vers published)
 router.post('/publish', authenticateToken, async (req, res) => {
     try {
-        // console.log('Début de la publication des convocations');
-
         const TeamConvocationDraft = getTeamConvocationDraftModel();
         const TeamConvocationPublished = getTeamConvocationPublishedModel();
         const OtherConvocationsDraft = getOtherConvocationsDraftModel();
         const OtherConvocationsPublished = getOtherConvocationsPublishedModel();
 
         // Copier les convocations d'équipe de draft à published
-        // console.log('Récupération des convocations d\'équipe de draft');
         const draftTeamConvocations = await TeamConvocationDraft.find();
-
-        await TeamConvocationPublished.deleteMany();
-
+        await TeamConvocationPublished.deleteMany(); // Supprimer les anciennes convocations publiées
         for (const draft of draftTeamConvocations) {
-            const draftObject = draft.toObject();
-
-            if (!draftObject.team) {
-                console.error('Erreur: La convocation de draft ne contient pas le champ `team`.');
-                continue; // Skip this draft if `team` is missing
-            }
-
-            const published = new TeamConvocationPublished(draftObject);
-            try {
-                await published.save();
-                // console.log(`Convocation d'équipe publiée: ${published._id}`);
-            } catch (saveError) {
-                console.error('Erreur lors de la sauvegarde de la convocation publiée:', saveError);
-            }
+            const published = new TeamConvocationPublished(draft.toObject());
+            await published.save();
         }
 
         // Copier les autres convocations de draft à published
         const draftOtherConvocations = await OtherConvocationsDraft.findOne();
         if (draftOtherConvocations) {
-            await OtherConvocationsPublished.deleteMany();
-
+            await OtherConvocationsPublished.deleteMany(); // Supprimer les anciennes convocations publiées
             const publishedOtherConvocations = new OtherConvocationsPublished(draftOtherConvocations.toObject());
             await publishedOtherConvocations.save();
-            // console.log(`Autres convocations publiées: ${publishedOtherConvocations._id}`);
         }
+
         res.status(201).json({ message: 'Convocations publiées avec succès' });
     } catch (error) {
-        console.error('Erreur lors de la publication des convocations:', error);
         res.status(500).json({ message: 'Erreur lors de la publication des convocations', error });
     }
 });
