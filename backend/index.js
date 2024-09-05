@@ -4,19 +4,28 @@ const dotenv = require('dotenv');
 const { connectToDatabase } = require('./models/db');
 const routes = require('./routes'); // Import central routes
 
+// Charger les variables d'environnement
+dotenv.config();
+const { NODE_ENV } = process.env;
+
 const app = express();
-const port = 5050;
+const port = 5000;
 
 // Middleware pour parser le JSON
 app.use(express.json());
 
-// Middleware CORS
-app.use(cors({
-    origin: 'https://convocations.esmorannes.com',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
 
+if (NODE_ENV === 'dev') {
+    app.use(cors());
+} else {
+    console.log('Environnement de production');
+    // Middleware CORS
+    app.use(cors({
+        origin: 'https://convocations.esmorannes.com',
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        allowedHeaders: ['Content-Type', 'Authorization']
+    }));
+}
 const startServer = () => {
     // Utiliser les routes centralisées après l'initialisation des modèles
     app.use('/api', routes);

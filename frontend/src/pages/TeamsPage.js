@@ -6,7 +6,7 @@ import TeamCard from '../components/TeamCard';
 import TeamModal from '../components/TeamModal';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.convocations.com/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.convocations.esmorannes.com/api';
 
 const TeamsPage = () => {
     const [teams, setTeams] = useState([]);

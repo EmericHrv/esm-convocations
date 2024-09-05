@@ -24,7 +24,7 @@ services:
     depends_on:
       - mongo
     ports:
-      - "5050:5050"
+      - "5000:5000"
 
   frontend:
     build:
@@ -34,7 +34,7 @@ services:
     networks:
       - convocations_network
     environment:
-      - REACT_APP_API_BASE_URL=https://api.convocations.com/api
+      - REACT_APP_API_BASE_URL=https://api.convocations.esmorannes.com/api
     ports:
       - "8081:8081"
 

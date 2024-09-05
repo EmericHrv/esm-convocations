@@ -6,7 +6,7 @@ import TeamColumn from '../components/TeamColumn';
 import Notification from '../components/Notification';
 import OtherConvocations from '../components/OtherConvocations';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.convocations.com/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.convocations.esmorannes.com/api';
 
 const ConvocationsPage = () => {
     const [teams, setTeams] = useState([]);
