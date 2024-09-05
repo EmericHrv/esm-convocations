@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FileUploadModal from './FileUploadModal';
 import { FolderPlusIcon } from '@heroicons/react/24/outline';
 import SearchBar from './SearchBar';
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.convocations.com/api';
 
 const PersonTable = ({ filteredData, fetchData, handleSearch, searchTerm, showNotification }) => {
     const [isFileModalOpen, setIsFileModalOpen] = useState(false);

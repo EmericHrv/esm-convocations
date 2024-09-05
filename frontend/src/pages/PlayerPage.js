@@ -5,7 +5,7 @@ import PersonTable from '../components/PersonTable';
 import Header from '../components/HeaderNav';
 import ErrorMessage from '../components/ErrorMessage';
 import Notification from '../components/Notification';
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.convocations.com/api';
 
 const PlayerPage = () => {
     const [data, setData] = useState([]);
