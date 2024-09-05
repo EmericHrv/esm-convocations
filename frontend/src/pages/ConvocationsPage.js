@@ -4,15 +4,15 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/HeaderNav';
 import TeamColumn from '../components/TeamColumn';
 import Notification from '../components/Notification';
-// import OtherConvocations from '../components/OtherConvocations';
+import OtherConvocations from '../components/OtherConvocations';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.convocations.esmorannes.com/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const ConvocationsPage = () => {
     const [teams, setTeams] = useState([]);
     const [convocationDraft, setConvocationDraft] = useState([]);
     const [persons, setPersons] = useState([]);
-    // const [otherConvocationsDraft, setOtherConvocationsDraft] = useState({});
+    const [otherConvocationsDraft, setOtherConvocationsDraft] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [notification, setNotification] = useState({ show: false, type: '', title: '', message: '' });
@@ -53,7 +53,7 @@ const ConvocationsPage = () => {
 
                 const dataDraft = await responseDraft.json();
                 setConvocationDraft(dataDraft.teams);
-                // setOtherConvocationsDraft(dataDraft.otherConvocations);
+                setOtherConvocationsDraft(dataDraft.otherConvocations);
 
                 // Fetch persons (licenciés)
                 const responsePersons = await fetch(`${API_BASE_URL}/persons`, {
@@ -184,6 +184,11 @@ const ConvocationsPage = () => {
                                             />
                                         ))}
                                     </div>
+                                    <OtherConvocations
+                                        otherConvocations={otherConvocationsDraft}
+                                        onConvocationChange={handleConvocationChange}
+                                        persons={persons}
+                                    />
                                     <div className="flex justify-end mt-4">
                                         <button
                                             className="px-4 py-2 bg-primary text-black rounded"
