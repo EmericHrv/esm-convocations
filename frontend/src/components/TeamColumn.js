@@ -626,71 +626,72 @@ const TeamColumn = ({ team, convocationDraft, onConvocationChange, persons }) =>
                                 </div>
                             </div>
                         </div>
-                    </>
-                )}
-                {/* Lavage Maillots */}
-                <div className="mt-0 border-t border-gray-100">
-                    <div className="px-4 py-2 flex items-center space-x-4">
-                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                            <Icon
-                                path={mdiTshirtCrewOutline}
-                                className="h-5 w-5 text-black" aria-hidden="true" />
-                        </span>
-                        <div className="flex flex-col flex-1">
-                            <h4 className="font-semibold text-gray-900">Lavage Maillots</h4>
-                            <Select
-                                value={lavageMaillots ? { value: lavageMaillots._id, label: `${lavageMaillots.nom} ${lavageMaillots.prenom}` } : null}
-                                onChange={handleLavageMaillotsChange}
-                                options={persons.map(person => ({ value: person._id, label: `${person.nom} ${person.prenom}` }))}
-                                placeholder="Choisissez un joueur"
-                                isSearchable
-                                isClearable
-                                className="mt-0"
-                                styles={customStyles}
-                            />
-                        </div>
-                    </div>
-                </div>
-                {/* Lavage Vestiaires Management */}
-                <div className="mt-0 border-t border-gray-100">
-                    <div className="px-4 py-2 flex items-center space-x-4">
-                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                            <img src={IconCleaner} alt="Lavage Vestiaires" className="h-5 w-5 text-black" />
-                        </span>
-
-                        <div className="flex flex-col flex-1">
-                            <h4 className="font-semibold text-gray-900">Lavage Vestiaires</h4>
-                            {lavageVestiaires.map((joueur, index) => (
-                                <div key={index} className="flex items-center mt-2">
+                        {/* Lavage Maillots */}
+                        <div className="mt-0 border-t border-gray-100">
+                            <div className="px-4 py-2 flex items-center space-x-4">
+                                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+                                    <Icon
+                                        path={mdiTshirtCrewOutline}
+                                        className="h-5 w-5 text-black" aria-hidden="true" />
+                                </span>
+                                <div className="flex flex-col flex-1">
+                                    <h4 className="font-semibold text-gray-900">Lavage Maillots</h4>
                                     <Select
-                                        value={joueur ? { value: joueur._id, label: `${joueur.nom} ${joueur.prenom}` } : null}
-                                        onChange={(option) => handleLavageVestiairesChange(index, option)}
+                                        value={lavageMaillots ? { value: lavageMaillots._id, label: `${lavageMaillots.nom} ${lavageMaillots.prenom}` } : null}
+                                        onChange={handleLavageMaillotsChange}
                                         options={persons.map(person => ({ value: person._id, label: `${person.nom} ${person.prenom}` }))}
                                         placeholder="Choisissez un joueur"
                                         isSearchable
                                         isClearable
-                                        className="flex-1"
+                                        className="mt-0"
                                         styles={customStyles}
                                     />
+                                </div>
+                            </div>
+                        </div>
+                        {/* Lavage Vestiaires Management */}
+                        <div className="mt-0 border-t border-gray-100">
+                            <div className="px-4 py-2 flex items-center space-x-4">
+                                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+                                    <img src={IconCleaner} alt="Lavage Vestiaires" className="h-5 w-5 text-black" />
+                                </span>
+
+                                <div className="flex flex-col flex-1">
+                                    <h4 className="font-semibold text-gray-900">Lavage Vestiaires</h4>
+                                    {lavageVestiaires.map((joueur, index) => (
+                                        <div key={index} className="flex items-center mt-2">
+                                            <Select
+                                                value={joueur ? { value: joueur._id, label: `${joueur.nom} ${joueur.prenom}` } : null}
+                                                onChange={(option) => handleLavageVestiairesChange(index, option)}
+                                                options={persons.map(person => ({ value: person._id, label: `${person.nom} ${person.prenom}` }))}
+                                                placeholder="Choisissez un joueur"
+                                                isSearchable
+                                                isClearable
+                                                className="flex-1"
+                                                styles={customStyles}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeLavageVestiaire(index)}
+                                                className="ml-2 text-red-500"
+                                            >
+                                                <MinusCircleIcon className="h-6 w-6" />
+                                            </button>
+                                        </div>
+                                    ))}
                                     <button
                                         type="button"
-                                        onClick={() => removeLavageVestiaire(index)}
-                                        className="ml-2 text-red-500"
+                                        onClick={addLavageVestiaire}
+                                        className="mt-2 text-primary"
                                     >
-                                        <MinusCircleIcon className="h-6 w-6" />
+                                        <PlusCircleIcon className="h-6 w-6 inline-block" /> Ajouter un joueur
                                     </button>
                                 </div>
-                            ))}
-                            <button
-                                type="button"
-                                onClick={addLavageVestiaire}
-                                className="mt-2 text-primary"
-                            >
-                                <PlusCircleIcon className="h-6 w-6 inline-block" /> Ajouter un joueur
-                            </button>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </>
+                )}
+
 
 
                 {/* Infos Diverses */}
