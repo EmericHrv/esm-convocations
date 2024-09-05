@@ -7,7 +7,6 @@ import PublishedTeamColumn from '../components/PublishedTeamColumn';
 import PublishedOtherConvocations from '../components/PublishedOtherConvocations';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.convocations.com/api';
-console.log('API_BASE_URL:', API_BASE_URL);
 
 const HomePage = () => {
     const [teamConvocations, setTeamConvocations] = useState([]);
