@@ -19,6 +19,7 @@ services:
     environment:
       - MONGO_URL=mongodb://mongo:27017/convocationsDB
       - JWT_SECRET=^%Fu3CVKsyhG5vQcmFJbGnJLLzYC#zsx#8hYUnMZNQL&M4uvMKRm1N&E74DR
+      - NODE_ENV=production
 
     depends_on:
       - mongo
