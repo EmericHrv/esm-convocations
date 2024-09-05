@@ -88,8 +88,8 @@ const ConvocationsPage = () => {
         fetchData();
     }, []);
 
-    const handleConvocationChange = async (teamId, updatedData) => {
-        console.log('Mise à jour de la convocation:', teamId, updatedData);
+    const handleTeamConvocationChange = (teamId, updatedData) => {
+        console.log('Mise à jour de la convocation d\'équipe:', teamId, updatedData);
 
         // Mettre à jour l'état local
         setConvocationDraft((prevState) => {
@@ -108,18 +108,37 @@ const ConvocationsPage = () => {
         });
 
         // Envoyer les données mises à jour au serveur
+        handleConvocationChange({
+            teamConvocations: [{ team: teamId, ...updatedData }]
+        });
+    };
+
+    const handleOtherConvocationsChange = (updatedData) => {
+        console.log('Mise à jour des autres convocations:', updatedData);
+
+        // Mettre à jour l'état local
+        setOtherConvocationsDraft((prevState) => ({
+            ...prevState,
+            ...updatedData,
+        }));
+
+        // Envoyer les données mises à jour au serveur
+        handleConvocationChange({
+            otherConvocations: { ...updatedData }
+        });
+    };
+
+    const handleConvocationChange = async (dataToSend) => {
         try {
             const token = localStorage.getItem('token');
 
             const response = await fetch(`${API_BASE_URL}/convocations/draft`, {
-                method: 'POST',  // ou 'PUT' si vous souhaitez mettre à jour les données existantes
+                method: 'POST',  // or 'PUT' if you are updating existing data
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify({
-                    teamConvocations: [{ team: teamId, ...updatedData }]
-                }),
+                body: JSON.stringify(dataToSend),
             });
 
             if (!response.ok) {
@@ -179,14 +198,14 @@ const ConvocationsPage = () => {
                                                 key={team._id}
                                                 team={team}
                                                 convocationDraft={convocationDraft}
-                                                onConvocationChange={handleConvocationChange}
+                                                onConvocationChange={handleTeamConvocationChange}  // Updated
                                                 persons={persons}
                                             />
                                         ))}
                                     </div>
                                     <OtherConvocations
                                         otherConvocations={otherConvocationsDraft}
-                                        onConvocationChange={handleConvocationChange}
+                                        onConvocationChange={handleOtherConvocationsChange}  // Updated
                                         persons={persons}
                                     />
                                     <div className="flex justify-end mt-4">

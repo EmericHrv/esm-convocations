@@ -6,7 +6,8 @@ import MatchTypeModal from './MatchTypeModal';
 import TextModal from './TextModal';
 import customStyles from '../assets/customStyles';
 import Icon from '@mdi/react';
-import { mdiShieldStarOutline, mdiWhistleOutline } from '@mdi/js';
+import IconCleaner from '../assets/cleaner.svg';
+import { mdiPoliceBadgeOutline, mdiWhistleOutline, mdiTshirtCrewOutline } from '@mdi/js';
 import { PencilIcon, CalendarIcon, TrophyIcon, MapPinIcon, ShieldCheckIcon, UserIcon, PlusCircleIcon, MinusCircleIcon, UserGroupIcon, FlagIcon, InformationCircleIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 const TeamColumn = ({ team, convocationDraft, onConvocationChange, persons }) => {
@@ -53,6 +54,19 @@ const TeamColumn = ({ team, convocationDraft, onConvocationChange, persons }) =>
             ? persons.find(person => person._id === teamConvocation.delegueTerrain._id)
             : null;
     });
+    const [lavageMaillots, setLavageMaillots] = useState(() => {
+        return teamConvocation.lavageMaillots
+            ? persons.find(person => person._id === teamConvocation.lavageMaillots._id)
+            : null;
+    });
+    const [lavageVestiaires, setLavageVestiaires] = useState(() => {
+        return teamConvocation.lavageVestiaires
+            ? teamConvocation.lavageVestiaires.map(joueur =>
+                persons.find(person => person._id === joueur._id)
+            )
+            : [];
+    });
+
     const [infos, setInfos] = useState(teamConvocation.infos || '');
     const [isDateTimeModalOpen, setIsDateTimeModalOpen] = useState(false);
     const [isMatchTypeModalOpen, setIsMatchTypeModalOpen] = useState(false);
@@ -266,6 +280,59 @@ const TeamColumn = ({ team, convocationDraft, onConvocationChange, persons }) =>
         }
     };
 
+    const handleLavageMaillotsChange = (selectedOption) => {
+        if (!selectedOption) {
+            setLavageMaillots(null);
+            onConvocationChange(team._id, { lavageMaillots: null });
+            return;
+        }
+        const selectedPerson = persons.find(person => person._id === selectedOption.value);
+
+        if (selectedPerson) {
+            setLavageMaillots(selectedPerson);
+            onConvocationChange(team._id, {
+                lavageMaillots: {
+                    _id: selectedPerson._id,
+                    name: `${selectedPerson.nom} ${selectedPerson.prenom}`
+                },
+            });
+        }
+    };
+
+    const handleLavageVestiairesChange = (index, selectedOption) => {
+        const updatedLavageVestiaires = [...lavageVestiaires];
+        if (!selectedOption) {
+            updatedLavageVestiaires.splice(index, 1);
+        } else {
+            const selectedPerson = persons.find(person => person._id === selectedOption.value);
+            updatedLavageVestiaires[index] = selectedPerson;
+        }
+        setLavageVestiaires(updatedLavageVestiaires);
+        onConvocationChange(team._id, {
+            lavageVestiaires: updatedLavageVestiaires.map(joueur => ({
+                _id: joueur._id,
+                name: `${joueur.nom} ${joueur.prenom}`
+            })),
+        });
+    };
+
+    const addLavageVestiaire = () => {
+        setLavageVestiaires([...lavageVestiaires, null]);
+    };
+
+    const removeLavageVestiaire = (index) => {
+        const updatedLavageVestiaires = [...lavageVestiaires];
+        updatedLavageVestiaires.splice(index, 1);
+        setLavageVestiaires(updatedLavageVestiaires);
+        onConvocationChange(team._id, {
+            lavageVestiaires: updatedLavageVestiaires.map(joueur => ({
+                _id: joueur._id,
+                name: `${joueur.nom} ${joueur.prenom}`
+            })),
+        });
+    };
+
+
     const formatDateTime = (dateString, timeString) => {
         if (!dateString || !timeString) return 'Pas encore définie';
 
@@ -368,6 +435,7 @@ const TeamColumn = ({ team, convocationDraft, onConvocationChange, persons }) =>
                             </div>
                         </div>
 
+                        {/* Adversaire */}
                         <div className="mt-0 border-t border-gray-100">
                             <div
                                 className="px-4 py-2 flex items-center justify-between cursor-pointer"
@@ -386,6 +454,7 @@ const TeamColumn = ({ team, convocationDraft, onConvocationChange, persons }) =>
                             </div>
                         </div>
 
+                        {/* Entraineur */}
                         <div className="mt-0 border-t border-gray-100">
                             <div className="px-4 py-2 flex items-center space-x-4">
                                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
@@ -539,7 +608,7 @@ const TeamColumn = ({ team, convocationDraft, onConvocationChange, persons }) =>
                             <div className="px-4 py-2 flex items-center space-x-4">
                                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
                                     <Icon
-                                        path={mdiShieldStarOutline}
+                                        path={mdiPoliceBadgeOutline}
                                         className="h-5 w-5 text-black" aria-hidden="true" />
                                 </span>
                                 <div className="flex flex-col flex-1">
@@ -559,6 +628,71 @@ const TeamColumn = ({ team, convocationDraft, onConvocationChange, persons }) =>
                         </div>
                     </>
                 )}
+                {/* Lavage Maillots */}
+                <div className="mt-0 border-t border-gray-100">
+                    <div className="px-4 py-2 flex items-center space-x-4">
+                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+                            <Icon
+                                path={mdiTshirtCrewOutline}
+                                className="h-5 w-5 text-black" aria-hidden="true" />
+                        </span>
+                        <div className="flex flex-col flex-1">
+                            <h4 className="font-semibold text-gray-900">Lavage Maillots</h4>
+                            <Select
+                                value={lavageMaillots ? { value: lavageMaillots._id, label: `${lavageMaillots.nom} ${lavageMaillots.prenom}` } : null}
+                                onChange={handleLavageMaillotsChange}
+                                options={persons.map(person => ({ value: person._id, label: `${person.nom} ${person.prenom}` }))}
+                                placeholder="Choisissez un joueur"
+                                isSearchable
+                                isClearable
+                                className="mt-0"
+                                styles={customStyles}
+                            />
+                        </div>
+                    </div>
+                </div>
+                {/* Lavage Vestiaires Management */}
+                <div className="mt-0 border-t border-gray-100">
+                    <div className="px-4 py-2 flex items-center space-x-4">
+                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+                            <img src={IconCleaner} alt="Lavage Vestiaires" className="h-5 w-5 text-black" />
+                        </span>
+
+                        <div className="flex flex-col flex-1">
+                            <h4 className="font-semibold text-gray-900">Lavage Vestiaires</h4>
+                            {lavageVestiaires.map((joueur, index) => (
+                                <div key={index} className="flex items-center mt-2">
+                                    <Select
+                                        value={joueur ? { value: joueur._id, label: `${joueur.nom} ${joueur.prenom}` } : null}
+                                        onChange={(option) => handleLavageVestiairesChange(index, option)}
+                                        options={persons.map(person => ({ value: person._id, label: `${person.nom} ${person.prenom}` }))}
+                                        placeholder="Choisissez un joueur"
+                                        isSearchable
+                                        isClearable
+                                        className="flex-1"
+                                        styles={customStyles}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeLavageVestiaire(index)}
+                                        className="ml-2 text-red-500"
+                                    >
+                                        <MinusCircleIcon className="h-6 w-6" />
+                                    </button>
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                onClick={addLavageVestiaire}
+                                className="mt-2 text-primary"
+                            >
+                                <PlusCircleIcon className="h-6 w-6 inline-block" /> Ajouter un joueur
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
                 {/* Infos Diverses */}
                 <div className="mt-0 border-t border-gray-100">
                     <div

@@ -151,6 +151,10 @@ const initializeSchemas = async () => {
             _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Person' }, // Référence à la personne
             name: { type: String }
         }], // Liste de non-convoqués
+        arbitresJeunes: [{
+            _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Person' }, // Référence à la personne
+            name: { type: String }
+        }], // Liste des arbitres jeunes
         responsablesBuvette: [{ name: { type: String } }], // Liste des responsables buvette
     });
 

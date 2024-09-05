@@ -9,7 +9,8 @@ import {
     ClockIcon
 } from '@heroicons/react/24/outline';
 import Icon from '@mdi/react';
-import { mdiShieldStarOutline, mdiWhistleOutline } from '@mdi/js';
+import { mdiPoliceBadgeOutline, mdiWhistleOutline, mdiTshirtCrewOutline } from '@mdi/js';
+import IconCleaner from '../assets/cleaner.svg'; // Ensure this path is correct
 import TeamHeaderCard from './TeamHeaderCard';
 import InfoCard from './InfoCard';
 
@@ -28,6 +29,8 @@ const PublishedTeamColumn = ({ teamPublished }) => {
         arbitreCentre,
         arbitreTouche,
         delegueTerrain,
+        lavageMaillots,
+        lavageVestiaires,
         infos,
     } = teamPublished;
 
@@ -52,7 +55,7 @@ const PublishedTeamColumn = ({ teamPublished }) => {
 
     return (
         <div className="bg-white shadow-lg rounded-lg p-4 flex-1">
-            <TeamHeaderCard title={teamPublished.team.name} />
+            <TeamHeaderCard title={teamPublished.team?.name || 'Équipe'} />
 
             {infos && infos.trim() !== '' && <InfoCard infos={infos} />}
 
@@ -123,24 +126,26 @@ const PublishedTeamColumn = ({ teamPublished }) => {
 
                         <h3 className="my-2 font-semibold text-gray-900">Équipe Dirigeante</h3>
 
-                        <div className="mt-0 border-t border-gray-100">
-                            <div className="px-4 py-2 flex items-center space-x-4">
-                                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                                    <UserIcon className="h-5 w-5 text-black" aria-hidden="true" />
-                                </span>
-                                <div className="flex flex-col flex-1">
-                                    <h4 className="font-semibold text-gray-900">Entraîneur</h4>
-                                    <div className="text-sm text-gray-700">
-                                        <span>{entraineur.name}</span>
-                                        {entraineur.phone && (
-                                            <span className="text-sm text-gray-500"> - {entraineur.phone}</span>
-                                        )}
+                        {entraineur && (
+                            <div className="mt-0 border-t border-gray-100">
+                                <div className="px-4 py-2 flex items-center space-x-4">
+                                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+                                        <UserIcon className="h-5 w-5 text-black" aria-hidden="true" />
+                                    </span>
+                                    <div className="flex flex-col flex-1">
+                                        <h4 className="font-semibold text-gray-900">Entraîneur</h4>
+                                        <div className="text-sm text-gray-700">
+                                            <span>{entraineur.name}</span>
+                                            {entraineur.phone && (
+                                                <span className="text-sm text-gray-500"> - {entraineur.phone}</span>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
 
-                        {coachs && coachs.length > 0 ? (
+                        {coachs && coachs.length > 0 && (
                             <div className="mt-0 border-t border-gray-100">
                                 <div className="px-4 py-2 flex items-center space-x-4">
                                     <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
@@ -160,7 +165,7 @@ const PublishedTeamColumn = ({ teamPublished }) => {
                                     </div>
                                 </div>
                             </div>
-                        ) : null}
+                        )}
 
                         <h3 className="my-2 font-semibold text-gray-900">Joueurs convoqués</h3>
 
@@ -213,7 +218,7 @@ const PublishedTeamColumn = ({ teamPublished }) => {
                             <div className="px-4 py-2 flex items-center space-x-4">
                                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
                                     <Icon
-                                        path={mdiShieldStarOutline}
+                                        path={mdiPoliceBadgeOutline}
                                         className="h-5 w-5 text-black" aria-hidden="true" />
                                 </span>
                                 <div className="flex flex-col flex-1">
@@ -222,6 +227,42 @@ const PublishedTeamColumn = ({ teamPublished }) => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Lavage Maillots */}
+                        {lavageMaillots && (
+                            <div className="mt-0 border-t border-gray-100">
+                                <div className="px-4 py-2 flex items-center space-x-4">
+                                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+                                        <Icon
+                                            path={mdiTshirtCrewOutline}
+                                            className="h-5 w-5 text-black" aria-hidden="true" />
+                                    </span>
+                                    <div className="flex flex-col flex-1">
+                                        <h4 className="font-semibold text-gray-900">Lavage Maillots</h4>
+                                        <span className="text-sm text-gray-700">{lavageMaillots?.name || 'Non défini'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Lavage Vestiaires */}
+                        {lavageVestiaires && lavageVestiaires.length > 0 && (
+                            <div className="mt-0 border-t border-gray-100">
+                                <div className="px-4 py-2 flex items-center space-x-4">
+                                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary">
+                                        <img src={IconCleaner} alt="Lavage Vestiaires" className="h-5 w-5 text-black" />
+                                    </span>
+                                    <div className="flex flex-col flex-1">
+                                        <h4 className="font-semibold text-gray-900">Lavage Vestiaires</h4>
+                                        <span className="text-sm text-gray-700">
+                                            {lavageVestiaires.map((joueur, index) => (
+                                                <div key={index}>{joueur.name}</div>
+                                            ))}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </>
                 )}
             </div>

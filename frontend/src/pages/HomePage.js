@@ -4,8 +4,9 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import HeaderNav from '../components/HeaderNav';
 import PublishedTeamColumn from '../components/PublishedTeamColumn';
+import PublishedOtherConvocations from '../components/PublishedOtherConvocations';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.convocations.esmorannes.com/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const HomePage = () => {
     const [teamConvocations, setTeamConvocations] = useState([]);
@@ -64,16 +65,11 @@ const HomePage = () => {
                                     ) : (
                                         <p>Pas de convocations disponibles.</p>
                                     )}
-                                    {/*<div className="other-convocations">
-                                        {otherConvocations ? (
-                                            <>
-                                                <h2>Autres Convocations</h2>
-                                                <p>{otherConvocations.description}</p>
-                                            </>
-                                        ) : (
-                                            <p>Aucune autre convocation disponible.</p>
-                                        )}
-                                    </div>*/}
+                                    <div className="mt-6">
+                                        <PublishedOtherConvocations
+                                            otherConvocations={otherConvocations}
+                                        />
+                                    </div>
                                 </>
                             )}
                         </div>
