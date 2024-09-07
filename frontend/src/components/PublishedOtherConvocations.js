@@ -50,11 +50,11 @@ const PublishedOtherConvocations = ({ otherConvocations }) => {
     return (
         <div className="bg-white shadow-lg rounded-lg p-4 flex-1 mt-4">
             <TeamHeaderCard title="Informations Complémentaires" />
-            {renderCategory(otherConvocations.absents, 'Absents')}
-            {renderCategory(otherConvocations.blesses, 'Blessés')}
-            {renderCategory(otherConvocations.suspendus, 'Suspendus')}
-            {renderCategory(otherConvocations.nonConvoques, 'Non Convoqués')}
-            {renderCategory(otherConvocations.arbitresJeunes, 'Arbitres Jeunes')}
+            {otherConvocations.absents && otherConvocations.absents.length > 0 && renderCategory(otherConvocations.absents, 'Absents')}
+            {otherConvocations.blesses && otherConvocations.blesses.length > 0 && renderCategory(otherConvocations.blesses, 'Blessés')}
+            {otherConvocations.suspendus && otherConvocations.suspendus.length > 0 && renderCategory(otherConvocations.suspendus, 'Suspendus')}
+            {otherConvocations.nonConvoques && otherConvocations.nonConvoques.length > 0 && renderCategory(otherConvocations.nonConvoques, 'Non Convoqués')}
+            {otherConvocations.arbitresJeunes && otherConvocations.arbitresJeunes.length > 0 && renderCategory(otherConvocations.arbitresJeunes, 'Arbitres Jeunes')}
             {renderResponsablesBuvette()}
         </div>
     );
