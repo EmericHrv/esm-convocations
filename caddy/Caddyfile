@@ -1,9 +1,0 @@
-api.convocations.esmorannes.com {
-reverse_proxy backend:5000
-tls developpement@esmorannes.com
-}
-
-convocations.esmorannes.com {
-reverse_proxy frontend:8080
-tls developpement@esmorannes.com
-}
