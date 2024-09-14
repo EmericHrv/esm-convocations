@@ -1,6 +1,7 @@
 {
   "short_name": "Convocations ES Morannes",
   "name": "Convocations ES Morannes",
+  "description": "Retrouvez les convocations des équipes séniors de l'ES Morannes.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,7 +9,7 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
